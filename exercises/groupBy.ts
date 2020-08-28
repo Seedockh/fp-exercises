@@ -1,28 +1,29 @@
-/** PROGRAMMATION FONCTIONNELLE */
-// IterableIterator<T> => array plus pratique pour boucler dessus
-// * + yield => crée un Generator qui s'interrompt à chaque itération, pour faire un appel Lazy itération par itération
-/*
-const compose = <T, U, V>(g: UnaryFunc<T, U>, f: UnaryFunc<U, V>) => (x: T) => f(g(x))
-
-const filter = <T>(f: (x: T) => boolean) => {
-  return function* (arr: IterableIterator<T>) {
-    for (const item of arr) {
-      if (f(item)) yield item
-    }
-  }
-}
-
-type NullaryFunc<T> = () => T
-type UnaryFunc<T, U> = (x: T) => U
-type BinaryFunc<T, U, V> = (x: T, y: U) => V
-type TertiaryFunc<T, U, V, W> = (x: T, y: U, z: V) => W
-type InfinaryFunc<T, U> = (...x: T[]) => U
-*/
-
 export {}
 type UnaryFunc<T, U> = (x: T) => U
+type Class = { class: string, value: number }
 
-const groupBy = <T, U, V>(f: UnaryFunc<T, U>, arr: U[]): U[] => {
-    return []
+const groupBy = <T>(f: UnaryFunc<Class, string>, arr: Class[]): T[] => {
+  return arr.reduce(<U>(groups: U[], item: Class) => {
+    return {
+      ...groups,
+      [f(item)]: [
+        ...groups[f(item)] || [],
+        item
+      ]
+    }
+  }, [])
 }
+
+console.log(groupBy(item => item.class, [
+    { class: "first", value: 3 },
+    { class: "third", value: 26 },
+    { class: "second", value: 18 },
+    { class: "second", value: 11 },
+    { class: "first", value: 5 },
+    { class: "first", value: 7 },
+    { class: "third", value: 27 },
+    { class: "first", value: 9 },
+    { class: "second", value: 14 },
+  ])
+)
 
